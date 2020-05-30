@@ -5,15 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.Validate;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import site.autzone.sqlbee.model.BinaryCondition;
 import site.autzone.sqlbee.model.ICondition;
 import site.autzone.sqlbee.model.IQueryObject;
 import site.autzone.sqlbee.model.IValue;
+import site.autzone.sqlbee.query.AbstractQuery;
 import site.autzone.sqlbee.sql.query.QueryUtils;
 import site.autzone.sqlbee.update.IUpdate;
 
 public class SqlUpdate implements IUpdate {
+  final Logger LOG = LoggerFactory.getLogger(AbstractQuery.class);
   private String updateText;
   private IQueryObject updateObject;
   private List<BinaryCondition> updateItems = new ArrayList<>();
@@ -25,7 +28,7 @@ public class SqlUpdate implements IUpdate {
   @Override
   public String toText() {
     this.build();
-    System.out.println("sql:\n" + this.updateText + "\n" + "params:\n" + this.values.toString());
+    LOG.debug("update sql:\n{}\n" + "params:\n{}",this.updateText, this.values.toString());
     return this.updateText;
   }
 

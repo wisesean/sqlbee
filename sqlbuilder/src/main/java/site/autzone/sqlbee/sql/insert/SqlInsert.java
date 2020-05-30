@@ -5,14 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.Validate;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import site.autzone.sqlbee.insert.IInsert;
 import site.autzone.sqlbee.model.IField;
 import site.autzone.sqlbee.model.IQueryObject;
 import site.autzone.sqlbee.model.IValue;
+import site.autzone.sqlbee.query.AbstractQuery;
 import site.autzone.sqlbee.sql.query.QueryUtils;
 
 public class SqlInsert implements IInsert {
+  final Logger LOG = LoggerFactory.getLogger(AbstractQuery.class);
   private String insertText;
   private IQueryObject insertObject;
   private List<InsertItem> insertItems = new ArrayList<>();
@@ -23,7 +26,7 @@ public class SqlInsert implements IInsert {
   @Override
   public String toText() {
     this.build();
-    System.out.println("sql:\n" + this.insertText + "\n" + "params:\n" + this.values.toString());
+    LOG.debug("insert sql:\n{}\nparams:\n{}" , this.insertText, this.values.toString());
     return this.insertText;
   }
 

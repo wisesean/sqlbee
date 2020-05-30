@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import site.autzone.sqlbee.model.ICondition;
 import site.autzone.sqlbee.model.IField;
 import site.autzone.sqlbee.model.IQueryObject;
 import site.autzone.sqlbee.model.ITextable;
 import site.autzone.sqlbee.model.IValue;
 
+/**
+ * 查询构建器抽象类
+ * @author xiaowj
+ *
+ */
 public abstract class AbstractQuery implements IQuery {
+  final Logger LOG = LoggerFactory.getLogger(AbstractQuery.class);
 	private boolean isCount = false;
 	//数据集限制
 	private String firstResultKey;
@@ -90,7 +97,7 @@ public abstract class AbstractQuery implements IQuery {
 	@Override
 	public String toText() {
 		this.build();
-		System.out.println("sql:\n"+this.queryText+"\n"+"params:\n"+this.values.toString());
+		LOG.debug("sql:\n{}\nparams:\n{}", this.queryText, this.values.toString());
 		return this.queryText;
 	}
 	
