@@ -42,7 +42,7 @@ public abstract class AbstractConditionConfigurer extends AbstractConfigableConf
 				parent.manageValue((IValue)child);
 			}else if(child instanceof AbstractCondition) {
 				AbstractCondition condition = (AbstractCondition)child;
-				manageAllValue(parent, condition.getAllChild());
+				manageAllValue(parent, condition.getChildren());
 			}
 		}
 	}

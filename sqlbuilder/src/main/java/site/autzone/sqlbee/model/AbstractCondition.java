@@ -32,7 +32,7 @@ public abstract class AbstractCondition implements ICondition {
 	}
 	
 	@Override
-	public List<ITextable> getAllChild() {
+	public List<ITextable> getChildren() {
 		return conditions;
 	}
 

@@ -91,7 +91,7 @@ public class BinaryConditionConfigurer extends AbstractConfigableConfigurer<SqlU
 		}
 		
 		//若条件是值的需要纳入管理
-		manageAllValue(parent, this.binaryCondition.getAllChild());
+		manageAllValue(parent, this.binaryCondition.getChildren());
 		
 		parent.addCondition(this.binaryCondition);
 	}
@@ -102,7 +102,7 @@ public class BinaryConditionConfigurer extends AbstractConfigableConfigurer<SqlU
 				parent.manageValue((IValue)child);
 			}else if(child instanceof AbstractCondition) {
 				AbstractCondition condition = (AbstractCondition)child;
-				manageAllValue(parent, condition.getAllChild());
+				manageAllValue(parent, condition.getChildren());
 			}
 		}
 	}

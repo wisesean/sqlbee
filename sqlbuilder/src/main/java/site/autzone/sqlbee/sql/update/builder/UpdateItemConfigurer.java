@@ -33,7 +33,7 @@ public class UpdateItemConfigurer extends AbstractConfigurer<SqlUpateBuilder> {
 	public void configure(SqlUpateBuilder parent) {
 		parent.addUpdateItems(this.updateItems);
 		for(UpdateItem child : this.updateItems) {
-			for(ITextable itemField : child.getAllChild()) {
+			for(ITextable itemField : child.getChildren()) {
 				if(itemField instanceof IValue) {
 					parent.manageValue((IValue)itemField);
 				}

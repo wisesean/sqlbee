@@ -5,4 +5,6 @@ public interface IQueryObject extends ITextable {
 	void setName(String name);
 	String getAlias();
 	void setAlias(String alias);
+	void leftJoin(ILeftJoin leftJoin);
+	void rightJoin(IRightJoin rightJoin);
 }

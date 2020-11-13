@@ -19,13 +19,13 @@ public class UpdateItem extends BinaryCondition {
 
 	@Override
 	public String toText() {
-		Validate.isTrue(super.getAllChild().size() == 2);
-		Validate.notNull(super.getAllChild().get(0));
-		Validate.notNull(super.getAllChild().get(1));
+		Validate.isTrue(super.getChildren().size() == 2);
+		Validate.notNull(super.getChildren().get(0));
+		Validate.notNull(super.getChildren().get(1));
 		StringBuffer sb = new StringBuffer();
-		sb.append(super.getAllChild().get(0).toText());
+		sb.append(super.getChildren().get(0).toText());
 		sb.append(" = ");
-		sb.append(super.getAllChild().get(1).toText());
+		sb.append(super.getChildren().get(1).toText());
 		return sb.toString();
 	}
 }

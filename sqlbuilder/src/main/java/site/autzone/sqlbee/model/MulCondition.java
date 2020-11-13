@@ -9,6 +9,6 @@ public class MulCondition extends AbstractCondition {
 	}
 	@Override
 	public String toText() {
-		return "("+QueryUtils.joinTextableWithStr(super.getAllChild(), " "+connector+" ")+")";
+		return "("+QueryUtils.joinTextableWithStr(super.getChildren(), " "+connector+" ")+")";
 	}
 }

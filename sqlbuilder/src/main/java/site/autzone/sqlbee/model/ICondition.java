@@ -7,5 +7,5 @@ public interface ICondition extends ITextable{
 	void add(int idx, ITextable in);
 	boolean remove(ITextable in);
 	ITextable getChild(int index);
-	List<ITextable> getAllChild();
+	List<ITextable> getChildren();
 }
