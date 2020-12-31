@@ -5,30 +5,45 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>site.autzone</groupId>
 	<artifactId>bee-parent</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>${reversion}</version>
 	<packaging>pom</packaging>
+
+	<developers>
+		<developer>
+			<name>xiaoweijun</name>
+		</developer>
+	</developers>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<spring.version>5.0.2.RELEASE</spring.version>
-		<version.sqlbee>0.0.2-SNAPSHOT</version.sqlbee>
+		<reversion>0.0.5-SNAPSHOT</reversion>
+		<beanutils.version>1.9.4</beanutils.version>
+		<commonslang3.version>3.11</commonslang3.version>
 	</properties>
 	<modules>
-		<module>sqlbuilder</module>
-		<module>sqlexecutor</module>
+        <module>configurer</module>
+		<module>builder</module>
+		<module>executor</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
 			<!-- sqlbee -->
 			<dependency>
 				<groupId>site.autzone.sqlbee</groupId>
-				<artifactId>sqlbuilder</artifactId>
-				<version>${version.sqlbee}</version>
+				<artifactId>configurer</artifactId>
+				<version>${reversion}</version>
 			</dependency>
 			<dependency>
 				<groupId>site.autzone.sqlbee</groupId>
-				<artifactId>sqlexecutor</artifactId>
-				<version>${version.sqlbee}</version>
+				<artifactId>builder</artifactId>
+				<version>${reversion}</version>
+			</dependency>
+			<dependency>
+				<groupId>site.autzone.sqlbee</groupId>
+				<artifactId>executor</artifactId>
+				<version>${reversion}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -39,19 +54,19 @@
 			<version>4.12</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.9.3</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${beanutils.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.4</version>
+			<version>${commonslang3.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

@@ -1,3 +1,0 @@
-org.apache.commons.dbutils.handlers.properties.DatePropertyHandler
-org.apache.commons.dbutils.handlers.columns.TimestampColumnHandler
-org.apache.commons.dbutils.handlers.properties.StringEnumPropertyHandler
