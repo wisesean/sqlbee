@@ -12,7 +12,7 @@ public interface Configurer<P> {
 	 * @param parent
 	 * @throws Exception
 	 */
-	void init(P parent);
+	Configurer<P> init(P parent);
 
 	/**
 	 * 将配置配置到被配置对象
@@ -20,4 +20,11 @@ public interface Configurer<P> {
 	 * @throws Exception
 	 */
 	void configure(P parent);
+
+	/**
+	 * 获取父级配置器
+	 * @return
+	 */
+	P getParent();
+
 }

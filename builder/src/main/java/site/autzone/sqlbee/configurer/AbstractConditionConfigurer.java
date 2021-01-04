@@ -3,11 +3,11 @@ package site.autzone.sqlbee.configurer;
 import java.util.ArrayList;
 import java.util.List;
 
-import site.autzone.configurer.AbstractConfigAbleConfigurer;
+import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.sqlbee.ITextAble;
 import site.autzone.sqlbee.builder.SqlBuilder;
 
-public abstract class AbstractConditionConfigurer extends AbstractConfigAbleConfigurer<SqlBuilder> {
+public abstract class AbstractConditionConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
 	List<ITextAble> conditions = new ArrayList<>();
 
 	public void add(ITextAble in) {

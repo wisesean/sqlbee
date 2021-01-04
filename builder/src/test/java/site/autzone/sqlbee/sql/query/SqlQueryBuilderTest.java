@@ -23,11 +23,17 @@ public class SqlQueryBuilderTest {
 
     @Test
     public void demo() {
-        SqlBuilder.createQuery().table("TABLE1", "T1").go();
-        SqlBuilder.createQuery().table("TABLE1", "T1").firstResults(100).go();
-        SqlBuilder.createQuery().table("TABLE1", "T1").firstResults(100).maxResults(300).go();
-        SqlBuilder.createQuery().table("TABLE1", "T1").firstResults(100).maxResults(300)
-                .isMysql(false).condition("=").left("T1.CODE").right(new Value("000000")).end().go();
+        SqlBuilder.createQuery().table("TABLE1", "T1").sql();
+        SqlBuilder.createQuery().table("TABLE1", "T1").maxResults(300).sql();
+        SqlBuilder.createQuery()
+                .table("TABLE1", "T1")
+                .firstResults(100)
+                .maxResults(300)
+                .condition("=")
+                .left("T1.CODE")
+                .right(new Value("000000"))
+                .end()
+                .sql();
     }
 
     @Test
@@ -155,20 +161,8 @@ public class SqlQueryBuilderTest {
                 sqlQuery.output());
         Assert.assertEquals(1, sqlQuery.getParameters().size());
         Assert.assertEquals("TEST", sqlQuery.getParameters().get(0));
-
-        // LIMIT查询
-        sb.firstResults(100).maxResults(400);
-        sqlQuery = sb.build();
-        Assert.assertEquals(
-                "SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM (SELECT T1.* FROM TABLE1 AS T1 INNER JOIN TABLE2 AS T2 ON (T2.ID = T1.ID) WHERE (T1.CATAGORY = ?)) AS A WHERE ROWNUM <= ?) WHERE RNUM >= ?",
-                sqlQuery.output());
-        Assert.assertEquals(3, sqlQuery.getParameters().size());
-        Assert.assertEquals("TEST", sqlQuery.getParameters().get(0));
-        Assert.assertEquals(400, sqlQuery.getParameters().get(1));
-        Assert.assertEquals(100, sqlQuery.getParameters().get(2));
-
         // MYSQL LIMIT查询
-        sb.isMysql();
+        sb.firstResults(100).maxResults(400);
         sqlQuery = sb.build();
         Assert.assertEquals(
                 "SELECT T1.* FROM TABLE1 AS T1 INNER JOIN TABLE2 AS T2 ON (T2.ID = T1.ID) WHERE (T1.CATAGORY = ?) LIMIT ?,?",

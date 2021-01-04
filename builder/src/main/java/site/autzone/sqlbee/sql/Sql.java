@@ -26,8 +26,8 @@ public class Sql implements ISql {
     final Logger LOG = LoggerFactory.getLogger("sql");
     private boolean isCount = false;
     // 数据集限制
-    private Integer firstResults;
-    private Integer maxResults;
+    private IValue firstResults;
+    private IValue maxResults;
     private SqlBuilderType type;
     //是否子查询
     private boolean isSub = false;
@@ -45,15 +45,6 @@ public class Sql implements ISql {
     private List<InsertColumn> insertColumns = new ArrayList<>();
     private List<Condition> updateColumns = new ArrayList<>();
     private List<IJoin> IJoins = new ArrayList<>();
-    private boolean isMySql = false;
-
-    public void isMySql(boolean isMySql) {
-        this.isMySql = isMySql;
-    }
-
-    public boolean isMySql() {
-        return this.isMySql;
-    }
 
     public SqlBuilderType getType() {
         return this.type;
@@ -104,7 +95,8 @@ public class Sql implements ISql {
         }
     }
 
-    public String queryText() {
+    @Override
+    public String buildQueryText() {
         Validate.isTrue(this.tables.size() > 0);
         return new StringBuffer("SELECT ")
                 .append(buildColumns())
@@ -113,46 +105,19 @@ public class Sql implements ISql {
                 .append(buildConditions())
                 .append(buildGroupByPart())
                 .append(buildHavingPart())
-                .append(buildOrderByPart()).toString();
+                .append(buildOrderByPart())
+                .append(buildLimit())
+                .toString();
     }
 
-    @Override
-    public String buildQueryText() {
-        //Mysql必须有偏移量才分页查询
-        if (this.isMySql() && this.getMaxResults() != null) return mysqlLimit();
-        if (!this.isMySql() && (this.getFirstResults() != null || this.getMaxResults() != null)) return oracleLimit();
-        return this.queryText();
-    }
-
-    private String mysqlLimit() {
-        return String.format("%s LIMIT %s,%s", this.queryText(), this.getFirstResults() == null ? 0 : this.getFirstResults(), this.getMaxResults());
-    }
-
-    private String oracleLimit() {
-        StringBuffer sqlLimit = new StringBuffer();
-        if (this.getMaxResults() != null && this.getFirstResults() != null) {
-            sqlLimit
-                    .append("SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM (")
-                    .append(this.queryText())
-                    .append(") AS A WHERE ROWNUM <= ")
-                    .append(this.getMaxResults())
-                    .append(") WHERE RNUM >= ")
-                    .append(this.getFirstResults());
-        } else if (this.getFirstResults() != null) {
-            sqlLimit
-                    .append("SELECT * FROM (SELECT A.*, ROWNUM RNUM FROM (")
-                    .append(this.queryText())
-                    .append(") AS A")
-                    .append(") WHERE A.RNUM >= ")
-                    .append(this.getFirstResults());
-        } else if (this.getMaxResults() != null) {
-            sqlLimit
-                    .append("SELECT A.*, ROWNUM RNUM FROM (")
-                    .append(this.queryText())
-                    .append(") AS A WHERE ROWNUM < ")
-                    .append(this.getMaxResults());
+    private String buildLimit() {
+        if(this.getMaxResults() != null && this.getFirstResults() != null) {
+            return String.format(" LIMIT %s,%s", this.getFirstResults().output(), this.getMaxResults().output());
         }
-        return sqlLimit.toString();
+        if(this.getMaxResults() != null) {
+            return String.format(" LIMIT %s, %s", 0, this.getMaxResults().output());
+        }
+        return "";
     }
 
     @Override
@@ -210,8 +175,7 @@ public class Sql implements ISql {
         Validate.isTrue(!this.tables.isEmpty());
         Validate.isTrue(!this.isCount);
         StringBuffer sb = new StringBuffer();
-        sb.append("DELETE ")
-                .append(buildColumns())
+        sb.append("DELETE")
                 .append(" FROM ")
                 .append(buildTables())
                 .append(buildConditions());
@@ -294,7 +258,7 @@ public class Sql implements ISql {
         return order;
     }
 
-    public String getQueryText() {
+    public String prepareSql() {
         return prepareSql;
     }
 
@@ -407,21 +371,21 @@ public class Sql implements ISql {
         this.parametersMap = parametersMap;
     }
 
-    public Integer getFirstResults() {
+    public IValue getFirstResults() {
         return firstResults;
     }
 
     @Override
-    public void firstResults(Integer firstResults) {
+    public void firstResults(IValue firstResults) {
         this.firstResults = firstResults;
     }
 
-    public Integer getMaxResults() {
+    public IValue getMaxResults() {
         return maxResults;
     }
 
     @Override
-    public void maxResults(Integer maxResults) {
+    public void maxResults(IValue maxResults) {
         this.maxResults = maxResults;
     }
 }

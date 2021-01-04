@@ -1,6 +1,6 @@
 package site.autzone.sqlbee.configurer;
 
-import site.autzone.configurer.AbstractConfigAbleConfigurer;
+import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.sqlbee.IColumn;
 import site.autzone.sqlbee.builder.SqlBuilder;
 import site.autzone.sqlbee.column.Column;
@@ -9,7 +9,7 @@ import site.autzone.sqlbee.sql.Group;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupByConfigurer extends AbstractConfigAbleConfigurer<SqlBuilder> {
+public class GroupByConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
 	private List<IColumn> columns = new ArrayList<>();
 
 	public GroupByConfigurer column(Column column) {

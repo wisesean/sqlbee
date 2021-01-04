@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @param <O>
  */
 @SuppressWarnings("rawtypes")
-public abstract class AbstractConfigAbleBuilder<O> implements ConfigAbleBuilder<O, ConfigurerAble> {
+public abstract class AbstractConfigurerMgmtBuilder<O> implements ConfigMgmtBuilder<O, ConfigurerMgmt> {
 	//builder
 	private AtomicBoolean building = new AtomicBoolean();
 
@@ -26,14 +26,13 @@ public abstract class AbstractConfigAbleBuilder<O> implements ConfigAbleBuilder<
 		}
 		this.object = doBuild();
 		return this.object;
-		//throw new AlreadyBuiltException("This object has already been built");
 	}
 
 	/**
 	 * 获取构建好的对象
 	 * @return
 	 */
-	public final O getObject() {
+	public final O getTarget() {
 		if (!this.building.get()) {
 			throw new IllegalStateException("This object has not been built");
 		}

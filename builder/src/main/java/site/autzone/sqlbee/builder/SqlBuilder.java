@@ -2,7 +2,7 @@ package site.autzone.sqlbee.builder;
 
 import java.util.*;
 
-import site.autzone.configurer.AbstractConfiguredBuilder;
+import site.autzone.configurer.AbstractConfigurerBuilder;
 import site.autzone.configurer.Configurer;
 import site.autzone.sqlbee.condition.AbstractCondition;
 import site.autzone.sqlbee.condition.Condition;
@@ -19,9 +19,8 @@ import site.autzone.sqlbee.sql.Order;
 import site.autzone.sqlbee.column.UpdateColumn;
 import site.autzone.sqlbee.configurer.*;
 import site.autzone.sqlbee.sql.Sql;
-import site.autzone.sqlbee.value.Value;
 
-public class SqlBuilder extends AbstractConfiguredBuilder<Sql> {
+public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
   private List<ITable> tables = new ArrayList<>();
   // 占位符对应的value
   private Map<String, IValue> parameters = new LinkedHashMap<String, IValue>();
@@ -40,15 +39,14 @@ public class SqlBuilder extends AbstractConfiguredBuilder<Sql> {
   private static Configurer sqlTableConfigurer = null;
 
   // 数据集限制
-  private Integer firstResults;
-  private Integer maxResults;
+  private IValue firstResults;
+  private IValue maxResults;
   private SqlBuilderType type; // 0 query;1 insert;2 update;3 delete;
   private Order order;
   private Group group;
   private Having having;
 
   private boolean isSub = false;
-  private boolean isMysql = true;
   private boolean isCount = false;
 
   private SqlBuilder() {}
@@ -89,19 +87,11 @@ public class SqlBuilder extends AbstractConfiguredBuilder<Sql> {
     this.updateColumns.addAll(updateColumns);
   }
 
-  public Integer getFirstResults() {
-    return firstResults;
-  }
-
-  public void setFirstResults(Integer firstResults) {
+  public void setFirstResults(IValue firstResults) {
     this.firstResults = firstResults;
   }
 
-  public Integer getMaxResults() {
-    return maxResults;
-  }
-
-  public void setMaxResults(Integer maxResults) {
+  public void setMaxResults(IValue maxResults) {
     this.maxResults = maxResults;
   }
 
@@ -147,10 +137,6 @@ public class SqlBuilder extends AbstractConfiguredBuilder<Sql> {
     columnConfigurer.init(this);
     this.add(columnConfigurer);
     return (ColumnConfigurer) columnConfigurer;
-  }
-
-  public void addAllConditions(List<ICondition> conditions) {
-    this.conditions.addAll(conditions);
   }
 
   public void addCondition(AbstractCondition condition) {
@@ -315,20 +301,10 @@ public class SqlBuilder extends AbstractConfiguredBuilder<Sql> {
     return this;
   }
 
-  public SqlBuilder isMysql() {
-    this.isMysql = true;
-    return this;
-  }
-
-  public SqlBuilder isMysql(boolean isMysql) {
-    this.isMysql = isMysql;
-    return this;
-  }
-
   /**
-   * 构建Sql
+   * 获取sql对象
    */
-  public Sql go() {
+  public Sql sql() {
     Sql goSql = super.build();
     goSql.output();
     return goSql;
@@ -355,7 +331,6 @@ public class SqlBuilder extends AbstractConfiguredBuilder<Sql> {
     sql.order(this.order);
     sql.group(this.group);
     sql.having(this.having);
-    sql.isMySql(this.isMysql);
     sql.setType(type);
     return sql;
   }

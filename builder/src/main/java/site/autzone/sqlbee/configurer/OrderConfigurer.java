@@ -1,6 +1,6 @@
 package site.autzone.sqlbee.configurer;
 
-import site.autzone.configurer.AbstractConfigAbleConfigurer;
+import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IColumn;
 import site.autzone.sqlbee.sql.Order;
@@ -9,7 +9,7 @@ import site.autzone.sqlbee.builder.SqlBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderConfigurer extends AbstractConfigAbleConfigurer<SqlBuilder> {
+public class OrderConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
 	private String order = "DESC";
 	private List<IColumn> columns = new ArrayList<>();
 

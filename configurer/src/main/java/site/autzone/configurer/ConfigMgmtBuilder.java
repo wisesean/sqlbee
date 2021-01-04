@@ -7,6 +7,10 @@ package site.autzone.configurer;
  * @param <O>
  * @param <P>
  */
-public interface ConfigAbleBuilder<O, P> extends ConfigurerAble<P> {
-	O build() throws Exception;
+public interface ConfigMgmtBuilder<O, P> extends ConfigurerMgmt<P> {
+	/**
+	 * 构建
+	 * @return
+	 */
+	O build();
 }

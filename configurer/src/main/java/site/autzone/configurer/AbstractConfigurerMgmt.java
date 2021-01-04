@@ -14,7 +14,7 @@ import org.springframework.util.Assert;
  *
  * @param <P>
  */
-public class AbstractConfigurerAble<P extends AbstractConfigurerAble<P>> implements ConfigurerAble<P> {
+public class AbstractConfigurerMgmt<P extends AbstractConfigurerMgmt<P>> implements ConfigurerMgmt<P> {
 	/**
 	 * 是否允许相同类型的配置存在多个
 	 */

@@ -52,13 +52,13 @@ public interface ISql extends IHasValues {
    *
    * @param firstResults
    */
-  void firstResults(Integer firstResults);
+  void firstResults(IValue firstResults);
   /**
    * 设置最大行
    *
    * @param maxResults
    */
-  void maxResults(Integer maxResults);
+  void maxResults(IValue maxResults);
   /**
    * 获取构造器管理的所有Value
    *
@@ -102,4 +102,10 @@ public interface ISql extends IHasValues {
   String buildDeleteText();
   /** 构造查询 */
   void buildDelete();
+
+  /**
+   * prepare sql
+   * @return
+   */
+  String prepareSql();
 }

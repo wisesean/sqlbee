@@ -1,17 +1,14 @@
 package site.autzone.sqlbee.configurer;
 
-import site.autzone.configurer.AbstractConfigAbleConfigurer;
-import site.autzone.sqlbee.IColumn;
+import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.sqlbee.ICondition;
 import site.autzone.sqlbee.builder.SqlBuilder;
-import site.autzone.sqlbee.column.Column;
-import site.autzone.sqlbee.sql.Group;
 import site.autzone.sqlbee.sql.Having;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HavingConfigurer extends AbstractConfigAbleConfigurer<SqlBuilder> {
+public class HavingConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
 	private List<ICondition> conditions = new ArrayList<>();
 
 	public HavingConfigurer condition(ICondition condition) {

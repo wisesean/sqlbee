@@ -3,7 +3,7 @@ package site.autzone.sqlbee.configurer;
 import java.util.HashMap;
 import java.util.Map;
 
-import site.autzone.configurer.AbstractConfigAbleConfigurer;
+import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.configurer.Configurer;
 import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.builder.SqlBuilder;
@@ -11,7 +11,7 @@ import site.autzone.sqlbee.condition.Condition;
 import site.autzone.sqlbee.IColumn;
 import site.autzone.sqlbee.IValue;
 
-public class ConditionConfigurer extends AbstractConfigAbleConfigurer<SqlBuilder> {
+public class ConditionConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
 	private final static int leftIdx = 0;
 	private final static int rightIdx = 1;
 	

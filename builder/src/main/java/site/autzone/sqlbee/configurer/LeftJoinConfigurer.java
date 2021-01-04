@@ -1,6 +1,6 @@
 package site.autzone.sqlbee.configurer;
 
-import site.autzone.configurer.AbstractConfigAbleConfigurer;
+import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.builder.SqlBuilder;
 import site.autzone.sqlbee.condition.Condition;
@@ -8,7 +8,7 @@ import site.autzone.sqlbee.ITable;
 import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.join.Left;
 
-public class LeftJoinConfigurer extends AbstractConfigAbleConfigurer<SqlBuilder> {
+public class LeftJoinConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
   private Left leftJoin;
 
   public LeftJoinConfigurer() {}

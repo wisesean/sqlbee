@@ -7,10 +7,9 @@ import java.util.List;
  * 可配置对象
  * @author wisesean
  *
- * @param <O>
- * @param <B>
+ * @param <P>
  */
-public interface ConfigurerAble<P> {
+public interface ConfigurerMgmt<P> {
 	/**
 	 * 添加一个配置
 	 * @param configurer

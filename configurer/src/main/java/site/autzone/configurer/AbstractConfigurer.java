@@ -10,8 +10,9 @@ public abstract class AbstractConfigurer<P> implements Configurer<P> {
 	private P parent;
 	
 	@Override
-	public void init(P parent) {
+	public Configurer<P> init(P parent) {
 		this.parent = parent;
+		return this;
 	}
 
 	/**

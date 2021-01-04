@@ -4,15 +4,15 @@ package site.autzone.configurer;
  * 一个存在可配置构建器的配置器
  * @author wisesean
  *
- * @param <O>
  * @param <P>
  */
-public abstract class AbstractConfigAbleConfigurer<P> extends AbstractConfigurerAble<AbstractConfigAbleConfigurer<P>> implements Configurer<P> {
+public abstract class AbstractConfigurerAbleConfigurer<P> extends AbstractConfigurerMgmt<AbstractConfigurerAbleConfigurer<P>> implements Configurer<P> {
 	private P parent;
 	
 	@Override
-	public void init(P parent) {
+	public Configurer<P> init(P parent) {
 		this.parent = parent;
+		return this;
 	}
 
 	/**

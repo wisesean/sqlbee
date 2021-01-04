@@ -431,13 +431,6 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   }
   // end firstResults configurer.
 
-  // start is mysql configurer
-  public SqlConfigurer isMysql(boolean isMysql) {
-    this.getParent().isMysql(false);
-    return this;
-  }
-  // end is mysql configurer.
-
   // start condition configurer
   @SuppressWarnings({"rawtypes", "unchecked"})
   public ConditionConfigurer condition() {
@@ -463,7 +456,7 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   /**
    * 构建Sql
    */
-  public Sql go() {
+  public Sql sql() {
     Sql goSql = this.getParent().build();
     goSql.output();
     return goSql;
