@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>site.autzone</groupId>
 	<artifactId>bee-parent</artifactId>
-	<version>${reversion}</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<developers>
@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<spring.version>5.0.2.RELEASE</spring.version>
-		<reversion>0.0.5-SNAPSHOT</reversion>
+		<sqlbee.version>0.0.5-SNAPSHOT</sqlbee.version>
 		<beanutils.version>1.9.4</beanutils.version>
 		<commonslang3.version>3.11</commonslang3.version>
 	</properties>
@@ -33,17 +33,17 @@
 			<dependency>
 				<groupId>site.autzone.sqlbee</groupId>
 				<artifactId>configurer</artifactId>
-				<version>${reversion}</version>
+				<version>${sqlbee.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>site.autzone.sqlbee</groupId>
 				<artifactId>builder</artifactId>
-				<version>${reversion}</version>
+				<version>${sqlbee.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>site.autzone.sqlbee</groupId>
 				<artifactId>executor</artifactId>
-				<version>${reversion}</version>
+				<version>${sqlbee.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -52,6 +52,11 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
