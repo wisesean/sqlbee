@@ -20,9 +20,11 @@ import java.util.concurrent.Future;
  * Sql执行器
  */
 public class SqlRunner implements SqlExecutor {
-    @Autowired private DataSource dataSource;
+    private DataSource dataSource;
     @Value("${site.autzone.sqlbee.execute.async.nThreads: 100}") private Integer nThreads;
-
+    public SqlRunner(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     @Override
     public QueryRunner getQueryRunner() {
         return new QueryRunner(this.dataSource);
