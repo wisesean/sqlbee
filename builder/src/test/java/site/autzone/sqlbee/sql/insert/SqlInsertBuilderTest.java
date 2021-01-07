@@ -31,4 +31,16 @@ public class SqlInsertBuilderTest {
     Assert.assertEquals(currentDate, sqlInsert.getParameters().get(1));
     Assert.assertEquals("这是一个测试的语句！", sqlInsert.getParameters().get(2));
   }
+
+  @Test
+  public void testNullValue() {
+    Sql sqlInsert =
+            SqlBuilder.createInsert()
+                    .table("TABLE")
+                    .column("NAME", "TEST")
+                    .column("CREATE_DATE", new Value(null))
+                    .column(new Column("DESC"), new Value("这是一个测试的语句！"))
+                    .sql();
+    Assert.assertEquals("INSERT INTO TABLE(NAME,CREATE_DATE,DESC) VALUES(?,?,?)", sqlInsert.prepareSql());
+  }
 }

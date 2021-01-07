@@ -1,9 +1,7 @@
 package site.autzone.sqlbee.sql.update;
 
 import org.junit.Assert;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
 import site.autzone.sqlbee.value.Value;
 import site.autzone.sqlbee.sql.Sql;
 import site.autzone.sqlbee.builder.SqlBuilder;
@@ -13,15 +11,13 @@ import site.autzone.sqlbee.builder.SqlBuilder;
  *
  * @author wisesean
  */
-public class SqlUpdateBuilderTest extends TestCase {
-  public SqlUpdateBuilderTest(String testName) {
-    super(testName);
+public class SqlUpdateBuilderTest {
+  @Test
+  public void testNullValue() {
+    SqlBuilder sb = SqlBuilder.createUpdate().table("TABLE").column("NAME", new Value(null)).end();
+    sb.sql();
   }
-
-  public static Test suite() {
-    return new TestSuite(SqlUpdateBuilderTest.class);
-  }
-
+  @Test
   public void testApp() throws Exception {
     SqlBuilder sb = SqlBuilder.createUpdate().table("TABLE").column("NAME", "TEST").end();
 

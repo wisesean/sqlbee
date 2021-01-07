@@ -1,5 +1,6 @@
 package site.autzone.sqlbee.sql.query;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,10 @@ public class SqlQueryBuilderTest {
                 .condition("=")
                 .left("T1.CODE")
                 .right(new Value("000000"))
+                .end()
+                .condition("=")
+                .left("T1.is_new")
+                .right(new Value(true))
                 .end()
                 .sql();
     }

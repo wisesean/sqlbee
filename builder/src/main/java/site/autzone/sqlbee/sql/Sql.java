@@ -16,6 +16,7 @@ import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.column.InsertColumn;
 import site.autzone.sqlbee.IJoin;
 import site.autzone.sqlbee.builder.SqlBuilderType;
+import site.autzone.sqlbee.value.Value;
 
 /**
  * 查询构建器抽象类
@@ -115,7 +116,12 @@ public class Sql implements ISql {
             return String.format(" LIMIT %s,%s", this.getFirstResults().output(), this.getMaxResults().output());
         }
         if(this.getMaxResults() != null) {
-            return String.format(" LIMIT %s, %s", 0, this.getMaxResults().output());
+            //默认添加firstResults
+            this.firstResults = new Value(0);
+            this.getParameters().add(0);
+            this.firstResults.setIdx(this.getParameters().size());
+            this.valueMap().put(""+this.firstResults.getIdx(), this.firstResults);
+            return String.format(" LIMIT %s, %s", this.getFirstResults().output(), this.getMaxResults().output());
         }
         return "";
     }
@@ -295,11 +301,24 @@ public class Sql implements ISql {
                 break;
         }
 
-        LOG.debug("==> Preparing: {}", this.prepareSql);
-        LOG.debug("==>Parameters: {}", this.getParameters().stream()
-                .map(v -> String.valueOf(v) + "(" + v.getClass().getSimpleName() + ")")
+        LOG.trace("==> Preparing: {};  ==>Parameters: {}", this.prepareSql, this.getParameters().stream()
+                .map(v -> String.valueOf(v) + "(" + ((v==null)?"NULL":v.getClass().getSimpleName()) + ")")
                 .collect(Collectors.joining(", ")));
+
+        LOG.info("==> sql: {}", this.preparing2sql());
         return this.prepareSql;
+    }
+
+    private String preparing2sql() {
+        String psql = this.prepareSql;
+        for(Object v : this.getParameters()) {
+            if(v == null || v instanceof Number || v instanceof Boolean) {
+                psql = psql.replaceFirst("\\?", String.valueOf(v));
+            }else {
+                psql = psql.replaceFirst("\\?", "'" + String.valueOf(v) + "'");
+            }
+        }
+        return psql;
     }
 
     @Override

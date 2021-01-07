@@ -17,13 +17,16 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import site.autzone.sqlbee.ISql;
+import site.autzone.sqlbee.sql.Sql;
 import site.autzone.sqlbee.sql.Table;
 import site.autzone.sqlbee.builder.SqlBuilder;
 import site.autzone.sqlbee.sql.sql.entity.Employee;
 import site.autzone.sqlbee.value.DateValue;
+import site.autzone.sqlbee.value.Value;
 
 /**
  * sql查询构建器测试用例
@@ -38,6 +41,17 @@ public class SqlQueryBuilderTest {
     Class.forName("org.h2.Driver");
     String db = "jdbc:h2:mem:;INIT=runscript from 'classpath:/employees.sql'";
     connection = DriverManager.getConnection(db);
+  }
+
+  @Test
+  public void testValue() throws SQLException {
+    SqlBuilder sb = SqlBuilder.createQuery().table("employee", "employee")
+            .condition("=").left("employee.isleader").right(new Value(true)).end();
+    List<Employee> list = this.queryBeans(sb.sql(), Employee.class);
+    Assert.assertEquals(2, list.size());
+    sb.condition("=").left("employee.salary").right(new Value(10000.10)).end();
+    list = this.queryBeans(sb.sql(), Employee.class);
+    Assert.assertEquals(1, list.size());
   }
   
   @Test
@@ -146,7 +160,7 @@ public class SqlQueryBuilderTest {
     RowProcessor processor = new BasicRowProcessor(bean);
     QueryRunner run = new QueryRunner();
     try {
-      return run.query(connection, sql.output(), new BeanListHandler<T>(t, processor),
+      return run.query(connection, sql.prepareSql(), new BeanListHandler<T>(t, processor),
           sql.getParameters().toArray());
     } catch (SQLException e) {
       e.printStackTrace();

@@ -46,6 +46,9 @@ public class Value implements IValue {
 
     @Override
     public Object convert() {
+        if(this.value == null) {
+            return null;
+        }
         if(this.valueType == null) {
             this.valueType = this.value.getClass();
             validateType();
