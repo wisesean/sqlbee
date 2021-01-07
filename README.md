@@ -18,3 +18,21 @@ SqlBuilder.createQuery().table("TABLE1", "T1").firstResults(100).maxResults(300)
 14:43:12.962 [main] DEBUG sql - ==>Parameters: 000000(String), 100(Integer), 300(Integer)
 ```
 
+## sql执行器
+配置SqlRunner:
+```java
+  @Bean
+  public SqlRunner sqlRunner() {
+      return new SqlRunner(this.dataSource());
+  }
+```
+使用runner执行sql
+```java
+  //注入sqlRunner
+  @Autowired SqlRunner sqlRunner;
+  //构建sql
+  Sql sql = SqlBuilder.createQuery().table("TABLE1", "T1").build();
+  List<Table> list = sqlRunner.queryBeans(sql, Table.class);
+```
+
+
