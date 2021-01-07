@@ -160,7 +160,7 @@ public class SqlQueryBuilderTest {
     RowProcessor processor = new BasicRowProcessor(bean);
     QueryRunner run = new QueryRunner();
     try {
-      return run.query(connection, sql.prepareSql(), new BeanListHandler<T>(t, processor),
+      return run.query(connection, sql.output(), new BeanListHandler<T>(t, processor),
           sql.getParameters().toArray());
     } catch (SQLException e) {
       e.printStackTrace();
