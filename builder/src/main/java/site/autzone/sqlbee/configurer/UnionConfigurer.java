@@ -2,11 +2,8 @@ package site.autzone.sqlbee.configurer;
 
 import site.autzone.configurer.AbstractConfigurerAbleConfigurer;
 import site.autzone.sqlbee.ISql;
-import site.autzone.sqlbee.ITextAble;
 import site.autzone.sqlbee.builder.SqlBuilder;
 import site.autzone.sqlbee.sql.Union;
-
-import java.util.List;
 
 public class UnionConfigurer extends AbstractConfigurerAbleConfigurer<SqlBuilder> {
     private Union union = new Union();

@@ -4,6 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 import site.autzone.sqlbee.ITable;
 import site.autzone.sqlbee.sql.Sql;
 
+/**
+ * 表
+ */
 public class Table implements ITable {
   private Sql subSql;
   private String name;

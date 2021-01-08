@@ -9,6 +9,9 @@ import site.autzone.sqlbee.ITextAble;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * union & union all
+ */
 public class Union implements ITextAble, HasChildren {
     private String type = "DISTINCT";
     private ISql unionSql;
@@ -43,7 +46,7 @@ public class Union implements ITextAble, HasChildren {
 
     @Override
     public ITextAble getChild(int index) {
-        Validate.isTrue(index == 0, "union only one child.");
+        Validate.isTrue(index == 0);
         return unionSql;
     }
 }

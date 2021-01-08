@@ -7,6 +7,9 @@ import site.autzone.sqlbee.IColumn;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * order by
+ */
 public class Order implements ITextAble {
 	private List<IColumn> columns = new ArrayList<>();
 	private String order = "DESC";
