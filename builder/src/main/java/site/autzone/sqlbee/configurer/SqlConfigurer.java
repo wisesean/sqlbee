@@ -42,11 +42,32 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   // columns insert
   private List<InsertColumn> insertColumns = new ArrayList<>();
 
+  // union
+  private List<Union> unions = new ArrayList<>();
+
   // condition
 
   private Order order = new Order();
   private Group group = new Group();
   private Having having = new Having();
+  // start configurer union
+
+  public SqlConfigurer union(ISql subSql) {
+    Union union = new Union();
+    union.setUnionSql(subSql);
+    this.unions.add(union);
+    return this;
+  }
+
+  public SqlConfigurer unionAll(ISql subSql) {
+    Union union = new Union();
+    union.all();
+    union.setUnionSql(subSql);
+    this.unions.add(union);
+    return this;
+  }
+
+  // end configurer union
 
   // start configurer table
   /**
@@ -498,6 +519,13 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
     if(this.having.conditions() != null && this.having.conditions().size() > 0) {
       parent.having(this.having);
       parent.manageAllValue(new ArrayList<>(this.having.conditions()));
+    }
+
+    if(this.unions != null && this.unions.size() > 0) {
+      for (Union union : this.unions) {
+        parent.manageValue(union);
+        parent.addUnion(union);
+      }
     }
   }
 }

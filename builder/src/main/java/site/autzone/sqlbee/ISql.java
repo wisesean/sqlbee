@@ -108,4 +108,10 @@ public interface ISql extends IHasValues {
    * @return
    */
   String prepareSql();
+
+  /**
+   * 是否子查询语句
+   * @param isSub
+   */
+  void isSubSql(boolean isSub);
 }

@@ -4,21 +4,13 @@ import java.util.*;
 
 import site.autzone.configurer.AbstractConfigurerBuilder;
 import site.autzone.configurer.Configurer;
+import site.autzone.sqlbee.*;
 import site.autzone.sqlbee.condition.AbstractCondition;
 import site.autzone.sqlbee.condition.Condition;
-import site.autzone.sqlbee.IColumn;
-import site.autzone.sqlbee.ICondition;
-import site.autzone.sqlbee.ITable;
-import site.autzone.sqlbee.ITextAble;
-import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.column.InsertColumn;
-import site.autzone.sqlbee.IJoin;
-import site.autzone.sqlbee.sql.Group;
-import site.autzone.sqlbee.sql.Having;
-import site.autzone.sqlbee.sql.Order;
+import site.autzone.sqlbee.sql.*;
 import site.autzone.sqlbee.column.UpdateColumn;
 import site.autzone.sqlbee.configurer.*;
-import site.autzone.sqlbee.sql.Sql;
 
 public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
   private List<ITable> tables = new ArrayList<>();
@@ -32,6 +24,8 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
 
   private List<InsertColumn> insertColumns = new ArrayList<>();
   private List<Condition> updateColumns = new ArrayList<>();
+  // union
+  private List<Union> unions = new ArrayList<>();
   // join
   private List<IJoin> IJoins = new ArrayList<>();
 
@@ -93,6 +87,31 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
 
   public void setMaxResults(IValue maxResults) {
     this.maxResults = maxResults;
+  }
+
+  public List<Union> getUnions() {
+    return unions;
+  }
+
+  public void addUnion(Union union) {
+    this.unions.add(union);
+  }
+
+  public UnionConfigurer union(ISql subSql) {
+    UnionConfigurer unionConfigurer = new UnionConfigurer();
+    unionConfigurer.init(this);
+    this.add((Configurer)unionConfigurer);
+    unionConfigurer.sql(subSql);
+    return unionConfigurer;
+  }
+
+  public UnionConfigurer unionAll(ISql subSql) {
+    UnionConfigurer unionConfigurer = new UnionConfigurer();
+    unionConfigurer.init(this);
+    this.add((Configurer)unionConfigurer);
+    unionConfigurer.all();
+    unionConfigurer.sql(subSql);
+    return unionConfigurer;
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
@@ -332,6 +351,7 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
     sql.group(this.group);
     sql.having(this.having);
     sql.setType(type);
+    sql.unions(this.unions);
     return sql;
   }
 
@@ -344,6 +364,7 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
     this.updateColumns.clear();
     this.IJoins.clear();
     this.getValues().clear();
+    this.unions.clear();
   }
 
   public List<Condition> getUpdateColumns() {
@@ -368,13 +389,17 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
     return value;
   }
 
+  public void manageValue(HasChildren hasChildren) {
+    this.manageAllValue(hasChildren.getChildren());
+  }
+
   public void manageAllValue(List<ITextAble> children) {
     for (ITextAble child : children) {
       if (child instanceof IValue) {
         this.manageValue((IValue) child);
-      } else if (child instanceof AbstractCondition) {
-        AbstractCondition condition = (AbstractCondition) child;
-        manageAllValue(condition.getChildren());
+      } else if (child instanceof HasChildren) {
+        HasChildren hasChildren = (HasChildren) child;
+        manageAllValue(hasChildren.getChildren());
       }else if(child instanceof Sql) {
         Sql sql = (Sql) child;
         manageAllSubValue(sql, new ArrayList<>(sql.getConditions()));

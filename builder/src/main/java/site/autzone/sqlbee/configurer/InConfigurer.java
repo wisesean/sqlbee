@@ -8,6 +8,8 @@ import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IColumn;
 import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.condition.In;
+import site.autzone.sqlbee.sql.Sql;
+import site.autzone.sqlbee.value.Value;
 
 public class InConfigurer extends AbstractConditionConfigurer {
   public InConfigurer column(String column) {
@@ -17,6 +19,23 @@ public class InConfigurer extends AbstractConditionConfigurer {
 
   public InConfigurer column(IColumn column) {
     super.add(0, column);
+    return this;
+  }
+
+  public InConfigurer subSql(Sql sql) {
+    if (super.conditions.get(0) == null) {
+      super.add(0, null);
+    }
+    sql.isSubSql(true);
+    super.add(sql);
+    return this;
+  }
+
+  public InConfigurer subSql(String sql) {
+    if (super.conditions.get(0) == null) {
+      super.add(0, null);
+    }
+    super.add(new Column(sql));
     return this;
   }
 

@@ -38,7 +38,41 @@ public class SqlQueryBuilderTest {
                 .left("T1.is_new")
                 .right(new Value(true))
                 .end()
+                .inCondition().column("T1.TID").subSql(SqlBuilder.createQuery().table("TABLE2", "T2").column("t2.id").condition("=")
+                .left("T2.is_new")
+                .right(new Value(true))
+                .end()
+                .sql())
+                .end()
+                .inCondition().column("T1.SID").subSql("SELECT T3.ID FROM TABLE3 AS T3 WHERE T3.ID = T1.SID").end()
                 .sql();
+    }
+
+    @Test
+    public void testUnion() {
+        SqlBuilder.createQuery().table("TABLE1", "T1").union(SqlBuilder.createQuery().table("TABLE1", "T2").build()).sql();
+        SqlBuilder.createQuery().table("TABLE1", "T1").end().union(SqlBuilder.createQuery().table("TABLE1", "T2").build()).end().sql();
+        SqlBuilder.createQuery().table("TABLE1", "T1").unionAll(SqlBuilder.createQuery().table("TABLE1", "T2").build()).sql();
+        SqlBuilder.createQuery().table("TABLE1", "T1")
+                .condition("=")
+                .left("T1.is_new")
+                .right(new Value(true))
+                .end()
+                .firstResults(100)
+                .maxResults(300)
+                .table().union(SqlBuilder.createQuery().table("TABLE1", "T2")
+                .condition("=")
+                .left("T2.is_new")
+                .right(new Value(true))
+                .end()
+                .inCondition().column("T1.TID").subSql(SqlBuilder.createQuery().table("TABLE2", "T2").column("t2.id").condition("=")
+                        .left("T2.is_new")
+                        .right(new Value(true))
+                        .end()
+                        .sql())
+                .end()
+                .build()).sql();
+
     }
 
     @Test

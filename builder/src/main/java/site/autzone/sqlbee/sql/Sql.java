@@ -39,6 +39,7 @@ public class Sql implements ISql {
     private ITextAble order;
     private ITextAble group;
     private ITextAble having;
+    private List<Union> unions = new ArrayList<>();
 
     private Map<String, IValue> parametersMap = new LinkedHashMap<String, IValue>();
     private String prepareSql;
@@ -65,6 +66,10 @@ public class Sql implements ISql {
 
     public boolean isSubSql() {
         return this.isSub;
+    }
+
+    public void unions(List<Union> unions) {
+        this.unions.addAll(unions);
     }
 
     public String buildColumns() {
@@ -108,7 +113,15 @@ public class Sql implements ISql {
                 .append(buildHavingPart())
                 .append(buildOrderByPart())
                 .append(buildLimit())
+                .append(buildUnion())
                 .toString();
+    }
+
+    private String buildUnion() {
+        if(this.unions == null || this.unions.size() == 0) {
+            return "";
+        }
+        return " " + TextAbleJoin.joinWithSkip(this.unions, " ");
     }
 
     private String buildLimit() {
@@ -219,7 +232,6 @@ public class Sql implements ISql {
         this.columns.addAll(columns);
     }
 
-
     public void condition(ICondition condition) {
         conditions.add(condition);
     }
@@ -304,8 +316,9 @@ public class Sql implements ISql {
         LOG.trace("==> Preparing: {};  ==>Parameters: {}", this.prepareSql, this.getParameters().stream()
                 .map(v -> String.valueOf(v) + "(" + ((v==null)?"NULL":v.getClass().getSimpleName()) + ")")
                 .collect(Collectors.joining(", ")));
-
-        LOG.info("==> sql: {}", this.preparing2sql());
+        if(!this.isSub) {
+            LOG.info("==> sql: {}", this.preparing2sql());
+        }
         return this.prepareSql;
     }
 
