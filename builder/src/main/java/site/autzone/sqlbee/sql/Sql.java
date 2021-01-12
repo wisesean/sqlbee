@@ -125,6 +125,7 @@ public class Sql implements ISql {
     }
 
     private String buildLimit() {
+        if(this.isCount) return "";
         if(this.getMaxResults() != null && this.getFirstResults() != null) {
             return String.format(" LIMIT %s,%s", this.getFirstResults().output(), this.getMaxResults().output());
         }
