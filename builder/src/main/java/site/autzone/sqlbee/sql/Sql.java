@@ -24,7 +24,7 @@ import site.autzone.sqlbee.value.Value;
  * @author xiaowj
  */
 public class Sql implements ISql {
-    final Logger LOG = LoggerFactory.getLogger("sql");
+    final Logger LOG = LoggerFactory.getLogger("sqlbee.sql");
     private boolean isCount = false;
     // 数据集限制
     private IValue firstResults;

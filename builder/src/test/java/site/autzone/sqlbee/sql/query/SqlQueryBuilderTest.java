@@ -1,6 +1,5 @@
 package site.autzone.sqlbee.sql.query;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public class SqlQueryBuilderTest {
 
     @Test
     public void demo() {
-        SqlBuilder.createQuery().table("TABLE1", "T1").sql();
+        SqlBuilder.createQuery().aliasColumn("T1", "ID", "SS").table("TABLE1", "T1").sql();
         SqlBuilder.createQuery().table("TABLE1", "T1").maxResults(300).sql();
         SqlBuilder.createQuery()
                 .table("TABLE1", "T1")
@@ -44,8 +43,14 @@ public class SqlQueryBuilderTest {
                 .end()
                 .sql())
                 .end()
-                .inCondition().column("T1.SID").subSql("SELECT T3.ID FROM TABLE3 AS T3 WHERE T3.ID = T1.SID").end()
+                .inCondition().column("T1.SID")
+                .subSql("SELECT T3.ID FROM TABLE3 AS T3 WHERE T3.ID = T1.SID").end()
                 .sql();
+    }
+
+    @Test
+    public void testSelect() {
+        SqlBuilder.createQuery().table("TABLE1", "T1").end().select().column("t1", "id", "ID").end().select().column("T1", "wsid", "WSID").end().sql();
     }
 
     @Test

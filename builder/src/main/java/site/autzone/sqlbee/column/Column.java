@@ -54,7 +54,7 @@ public class Column implements IColumn {
 		}
 		sb.append(this.name);
 		if(this.alias != null) {
-			sb.append(" ").append(this.alias);
+			sb.append(" AS ").append(this.alias);
 		}
 		return sb.toString();
 	}
