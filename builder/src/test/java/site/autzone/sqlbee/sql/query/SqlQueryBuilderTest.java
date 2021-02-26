@@ -106,12 +106,12 @@ public class SqlQueryBuilderTest {
                                 .condition("=").left("T1.ID").right("T2.ID").end()
                                 .build())
                 .end()
-                .condition("=").left("T1.CLASS").right(new Value("ABC")).end();
+                .condition("=").left("T1.CLASS").right(new Value("$ABC")).end();
         Sql sql = sb.build();
         Assert.assertEquals("SELECT * FROM TABLE1 AS T1 WHERE (T1.CODE > ?) AND (T1.CLASS = ?) AND EXISTS (SELECT * FROM TABLE2 AS T2 WHERE (T2.NAME = ?) AND (T1.ID = T2.ID))",
                 sql.output());
         Assert.assertEquals(111, sql.getParameters().get(0));
-        Assert.assertEquals("ABC", sql.getParameters().get(1));
+        Assert.assertEquals("$ABC", sql.getParameters().get(1));
         Assert.assertEquals("测试", sql.getParameters().get(2));
     }
 

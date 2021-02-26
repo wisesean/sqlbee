@@ -325,14 +325,26 @@ public class Sql implements ISql {
 
     private String preparing2sql() {
         String psql = this.prepareSql;
-        for(Object v : this.getParameters()) {
-            if(v == null || v instanceof Number || v instanceof Boolean) {
-                psql = psql.replaceFirst("\\?", String.valueOf(v));
-            }else {
-                psql = psql.replaceFirst("\\?", "'" + String.valueOf(v) + "'");
+        StringBuffer sb = new StringBuffer();
+        String[] sp = psql.split("\\?");
+        for (int i = 0; i < sp.length; i++) {
+            System.out.println(sp[i]);
+        }
+        for (int i = 0; i < sp.length; i++) {
+            sb.append(sp[i]);
+            if(i < this.getParameters().size()) {
+                sb.append(printValueString(this.getParameters().get(i)));
             }
         }
-        return psql;
+        return sb.toString();
+    }
+
+    private String printValueString(Object v) {
+        if(v == null || v instanceof Number || v instanceof Boolean) {
+            return String.valueOf(v);
+        }else {
+            return "'" + String.valueOf(v) + "'";
+        }
     }
 
     @Override
