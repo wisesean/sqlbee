@@ -20,6 +20,23 @@ import site.autzone.sqlbee.builder.SqlBuilder;
  * @author wisesean
  */
 public class SqlQueryBuilderTest {
+    @Test public void testInnerJoin() {
+        SqlBuilder sb = SqlBuilder.createQuery().table("Table1", "t1")
+                .innerJoin(new Table("innerJoin", "t2")).joinCondition("t1.id","=","t2.parentId").end();
+        sb.table().innerJoin(new Table("tab3", "t3")).joinCondition("t1.id","=","t3.parentId").end();
+        sb.table().column("t1.id").column("t1.wsid", "wsid");
+        sb.isCount(false);
+        sb.sql();
+
+        sb.isCount(true);
+        sb.sql();
+
+        sb.table().countColumn("DISTINCT T1.ID");
+        sb.sql();
+
+        sb.select().countColumn("T2.ID");
+        sb.sql();
+    }
 
     @Test
     public void demo() {

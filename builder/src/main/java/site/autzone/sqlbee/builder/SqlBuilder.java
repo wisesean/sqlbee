@@ -20,6 +20,10 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
   private List<Object> values = new ArrayList<>();
 
   private List<IColumn> columns = new ArrayList<>();
+  /**
+   * 统计字段
+   */
+  private List<IColumn> countColumns = new ArrayList<>();
   private List<ICondition> conditions = new ArrayList<>();
 
   private List<InsertColumn> insertColumns = new ArrayList<>();
@@ -148,6 +152,14 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
 
   public void addAllColumn(List<IColumn> columns) {
     this.columns.addAll(columns);
+  }
+
+  /**
+   * 添加统计字段
+   * @param columns
+   */
+  public void addAllCountColumn(List<IColumn> columns) {
+    this.countColumns.addAll(columns);
   }
 
   @SuppressWarnings({"rawtypes", "unchecked"})
@@ -335,6 +347,7 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
     sql.isSubSql(this.isSub);
     sql.tableAll(this.getTables());
     sql.columnAll(this.columns);
+    sql.countColumnAll(this.countColumns);
     sql.conditionAll(this.conditions);
     sql.joinAll(this.IJoins);
     sql.addInsertColumnAll(this.insertColumns);
@@ -359,6 +372,7 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
   public void afterBuild() {
     this.getTables().clear();
     this.columns.clear();
+    this.countColumns.clear();
     this.conditions.clear();
     this.insertColumns.clear();
     this.updateColumns.clear();

@@ -35,6 +35,10 @@ public class Sql implements ISql {
 
     private List<ITable> tables = new ArrayList<>();
     private List<IColumn> columns = new ArrayList<>();
+    /**
+     * 统计字段
+     */
+    private List<IColumn> countColumns = new ArrayList<>();
     private List<ICondition> conditions = new ArrayList<>();
     private ITextAble order;
     private ITextAble group;
@@ -74,7 +78,11 @@ public class Sql implements ISql {
 
     public String buildColumns() {
         if (this.isCount()) {
-            return "COUNT(*) COUNT";
+            if(this.countColumns.size() == 0) {
+                return "COUNT(*) COUNT";
+            }else {
+                return TextAbleJoin.joinWithSkip(this.countColumns, ",");
+            }
         }
 
         if (this.getColumns().size() == 0) {
@@ -231,6 +239,14 @@ public class Sql implements ISql {
 
     public void columnAll(List<IColumn> columns) {
         this.columns.addAll(columns);
+    }
+
+    /**
+     * 统计字段
+     * @param columns
+     */
+    public void countColumnAll(List<IColumn> columns) {
+        this.countColumns.addAll(columns);
     }
 
     public void condition(ICondition condition) {

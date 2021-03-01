@@ -36,6 +36,9 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   // columns query/delete
   private List<IColumn> columns = new ArrayList<>();
 
+  // count columns
+  private List<IColumn> countColumns = new ArrayList<>();
+
   // columns update
   private List<UpdateColumn> updateColumns = new ArrayList<>();
 
@@ -280,6 +283,17 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
     return this;
   }
 
+  // start configurer column
+  public SqlConfigurer countColumn(IColumn column, IValue value) {
+    switch (this.getParent().getType()) {
+      case QUERY:
+        this.countColumns.add(column);
+      default:
+        break;
+    }
+    return this;
+  }
+
   /**
    * 更新，插入，删除的字段
    * @param data
@@ -311,8 +325,30 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
     return this;
   }
 
+  /**
+   * 统计字段
+   * @param column
+   * @param value
+   * @return
+   */
+  public SqlConfigurer countColumn(String column, IValue value) {
+    this.countColumn(new Column(column), value);
+    return this;
+  }
+
   public SqlConfigurer column(String column, String value) {
     this.column(new Column(column), new Value(value));
+    return this;
+  }
+
+  /**
+   * 统计字段
+   * @param column
+   * @param value
+   * @return
+   */
+  public SqlConfigurer countColumn(String column, String value) {
+    this.countColumn(new Column(column), new Value(value));
     return this;
   }
 
@@ -321,8 +357,29 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
     return this;
   }
 
+  /**
+   * 统计字段
+   * @param column
+   * @param value
+   * @return
+   */
+  public SqlConfigurer countColumn(IColumn column, String value) {
+    this.countColumn(column, new Value(value));
+    return this;
+  }
+
   public SqlConfigurer column(IColumn column) {
     this.column(column, "null");
+    return this;
+  }
+
+  /**
+   * 统计字段
+   * @param column
+   * @return
+   */
+  public SqlConfigurer countColumn(IColumn column) {
+    this.countColumn(column, "null");
     return this;
   }
 
@@ -333,6 +390,16 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
    */
   public SqlConfigurer column(String column) {
     this.column(new Column(column), "null");
+    return this;
+  }
+
+  /**
+   * 统计字段
+   * @param column
+   * @return
+   */
+  public SqlConfigurer countColumn(String column) {
+    this.countColumn(new Column(column), "null");
     return this;
   }
 
@@ -487,6 +554,7 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   public void configure(SqlBuilder parent) {
     parent.addAllTable(this.tables);
     parent.addAllColumn(this.columns);
+    parent.addAllCountColumn(this.countColumns);
     parent.addInsertColumns(this.insertColumns);
     parent.addUpdateColumns(this.updateColumns);
     parent.addJoins(this.IJoins);
