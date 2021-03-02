@@ -81,7 +81,7 @@ public class Sql implements ISql {
             if(this.countColumns.size() == 0) {
                 return "COUNT(*) COUNT";
             }else {
-                return TextAbleJoin.joinWithSkip(this.countColumns, ",");
+                return this.countColumns.get(this.countColumns.size() - 1).output();
             }
         }
 
@@ -343,9 +343,6 @@ public class Sql implements ISql {
         String psql = this.prepareSql;
         StringBuffer sb = new StringBuffer();
         String[] sp = psql.split("\\?");
-        for (int i = 0; i < sp.length; i++) {
-            System.out.println(sp[i]);
-        }
         for (int i = 0; i < sp.length; i++) {
             sb.append(sp[i]);
             if(i < this.getParameters().size()) {

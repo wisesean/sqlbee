@@ -284,13 +284,8 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   }
 
   // start configurer column
-  public SqlConfigurer countColumn(IColumn column, IValue value) {
-    switch (this.getParent().getType()) {
-      case QUERY:
-        this.countColumns.add(column);
-      default:
-        break;
-    }
+  public SqlConfigurer countColumn(String countColumn) {
+    this.countColumns.add(new Column(countColumn));
     return this;
   }
 
@@ -325,30 +320,8 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
     return this;
   }
 
-  /**
-   * 统计字段
-   * @param column
-   * @param value
-   * @return
-   */
-  public SqlConfigurer countColumn(String column, IValue value) {
-    this.countColumn(new Column(column), value);
-    return this;
-  }
-
   public SqlConfigurer column(String column, String value) {
     this.column(new Column(column), new Value(value));
-    return this;
-  }
-
-  /**
-   * 统计字段
-   * @param column
-   * @param value
-   * @return
-   */
-  public SqlConfigurer countColumn(String column, String value) {
-    this.countColumn(new Column(column), new Value(value));
     return this;
   }
 
@@ -357,29 +330,8 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
     return this;
   }
 
-  /**
-   * 统计字段
-   * @param column
-   * @param value
-   * @return
-   */
-  public SqlConfigurer countColumn(IColumn column, String value) {
-    this.countColumn(column, new Value(value));
-    return this;
-  }
-
   public SqlConfigurer column(IColumn column) {
     this.column(column, "null");
-    return this;
-  }
-
-  /**
-   * 统计字段
-   * @param column
-   * @return
-   */
-  public SqlConfigurer countColumn(IColumn column) {
-    this.countColumn(column, "null");
     return this;
   }
 
@@ -390,16 +342,6 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
    */
   public SqlConfigurer column(String column) {
     this.column(new Column(column), "null");
-    return this;
-  }
-
-  /**
-   * 统计字段
-   * @param column
-   * @return
-   */
-  public SqlConfigurer countColumn(String column) {
-    this.countColumn(new Column(column), "null");
     return this;
   }
 

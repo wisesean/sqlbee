@@ -20,7 +20,7 @@ public class ColumnConfigurer extends AbstractConfigurer<SqlBuilder> {
 	}
 
 	public ColumnConfigurer countColumn(String name) {
-		countColumns.add(new Column(null, name, null));
+		countColumns.add(new Column(name));
 		return this;
 	}
 	
@@ -33,19 +33,9 @@ public class ColumnConfigurer extends AbstractConfigurer<SqlBuilder> {
 		columns.add(new Column(null, name, alias));
 		return this;
 	}
-
-	public ColumnConfigurer countColumn(String name, String alias) {
-		countColumns.add(new Column(null, name, alias));
-		return this;
-	}
 	
 	public ColumnConfigurer column(String prefix, String name, String alias) {
 		columns.add(new Column(prefix, name, alias));
-		return this;
-	}
-
-	public ColumnConfigurer countColumn(String prefix, String name, String alias) {
-		countColumns.add(new Column(prefix, name, alias));
 		return this;
 	}
 	

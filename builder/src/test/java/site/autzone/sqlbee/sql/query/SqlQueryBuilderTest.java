@@ -20,24 +20,9 @@ import site.autzone.sqlbee.builder.SqlBuilder;
  * @author wisesean
  */
 public class SqlQueryBuilderTest {
-    @Test public void testInnerJoin() {
-        SqlBuilder sb = SqlBuilder.createQuery().table("Table1", "t1")
-                .innerJoin(new Table("innerJoin", "t2")).joinCondition("t1.id","=","t2.parentId").end();
-        sb.table().innerJoin(new Table("tab3", "t3")).joinCondition("t1.id","=","t3.parentId").end();
-        sb.table().column("t1.id").column("t1.wsid", "wsid");
-        sb.isCount(false);
-        sb.sql();
-
-        sb.isCount(true);
-        sb.sql();
-
-        sb.table().countColumn("DISTINCT T1.ID");
-        sb.sql();
-
-        sb.select().countColumn("T2.ID");
-        sb.sql();
-    }
-
+    /**
+     * 构建示例测试用例
+     */
     @Test
     public void demo() {
         SqlBuilder.createQuery().aliasColumn("T1", "ID", "SS").table("TABLE1", "T1").sql();
@@ -65,17 +50,51 @@ public class SqlQueryBuilderTest {
                 .sql();
     }
 
+    /**
+     * 测试count 添加count字段
+     */
+    @Test
+    public void testCount() {
+        SqlBuilder sb = SqlBuilder.createQuery().table("Table1", "t1")
+                .innerJoin(new Table("innerJoin", "t2")).joinCondition("t1.id","=","t2.parentId").end();
+        sb.table().innerJoin(new Table("tab3", "t3")).joinCondition("t1.id","=","t3.parentId").end();
+        sb.table().column("t1.id").column("t1.wsid", "wsid");
+        sb.isCount(false);
+        Assert.assertEquals("SELECT t1.id,t1.wsid FROM Table1 AS t1 INNER JOIN innerJoin AS t2 ON (t1.id = t2.parentId) INNER JOIN tab3 AS t3 ON (t1.id = t3.parentId)",
+                sb.build().output());
+
+        sb.isCount(true);
+        //默认的COUNT语句
+        Assert.assertEquals("SELECT COUNT(*) COUNT FROM Table1 AS t1 INNER JOIN innerJoin AS t2 ON (t1.id = t2.parentId) INNER JOIN tab3 AS t3 ON (t1.id = t3.parentId)",
+                sb.build().output());
+
+        //设置COUNT字段
+        sb.table().countColumn("COUNT(DISTINCT T1.ID) COUNT");
+        Assert.assertEquals("SELECT COUNT(DISTINCT T1.ID) COUNT FROM Table1 AS t1 INNER JOIN innerJoin AS t2 ON (t1.id = t2.parentId) INNER JOIN tab3 AS t3 ON (t1.id = t3.parentId)",
+                sb.build().output());
+        //每次取最后一个COUNT字段
+        sb.select().countColumn("COUNT(T2.ID) COUNT");
+        Assert.assertEquals("SELECT COUNT(T2.ID) COUNT FROM Table1 AS t1 INNER JOIN innerJoin AS t2 ON (t1.id = t2.parentId) INNER JOIN tab3 AS t3 ON (t1.id = t3.parentId)",
+                sb.build().output());
+    }
+
     @Test
     public void testSelect() {
-        SqlBuilder.createQuery().table("TABLE1", "T1").end().select().column("t1", "id", "ID").end().select().column("T1", "wsid", "WSID").end().sql();
+        Sql sql= SqlBuilder.createQuery().table("TABLE1", "T1").end().select().column("t1", "id", "ID").end().select().column("T1", "wsid", "WSID").end().sql();
+        Assert.assertEquals("SELECT t1.id AS ID,T1.wsid AS WSID FROM TABLE1 AS T1", sql.output());
     }
 
     @Test
     public void testUnion() {
-        SqlBuilder.createQuery().table("TABLE1", "T1").union(SqlBuilder.createQuery().table("TABLE1", "T2").build()).sql();
-        SqlBuilder.createQuery().table("TABLE1", "T1").end().union(SqlBuilder.createQuery().table("TABLE1", "T2").build()).end().sql();
-        SqlBuilder.createQuery().table("TABLE1", "T1").unionAll(SqlBuilder.createQuery().table("TABLE1", "T2").build()).sql();
-        SqlBuilder.createQuery().table("TABLE1", "T1")
+        //UNION
+        Sql sql = SqlBuilder.createQuery().table("TABLE1", "T1").union(SqlBuilder.createQuery().table("TABLE1", "T2").build()).sql();
+        Assert.assertEquals("SELECT * FROM TABLE1 AS T1 UNION DISTINCT SELECT * FROM TABLE1 AS T2", sql.output());
+        //UNION ALL
+        sql = SqlBuilder.createQuery().table("TABLE1", "T1").unionAll(SqlBuilder.createQuery().table("TABLE1", "T2").build()).sql();
+        Assert.assertEquals("SELECT * FROM TABLE1 AS T1 UNION ALL SELECT * FROM TABLE1 AS T2", sql.output());
+
+        //带子查询的UNION
+        sql = SqlBuilder.createQuery().table("TABLE1", "T1")
                 .condition("=")
                 .left("T1.is_new")
                 .right(new Value(true))
@@ -94,7 +113,7 @@ public class SqlQueryBuilderTest {
                         .sql())
                 .end()
                 .build()).sql();
-
+        Assert.assertEquals("SELECT * FROM TABLE1 AS T1 WHERE (T1.is_new = ?) LIMIT ?,? UNION DISTINCT SELECT * FROM TABLE1 AS T2 WHERE (T2.is_new = ?) AND (T1.TID IN(SELECT t2.id FROM TABLE2 AS T2 WHERE (T2.is_new = ?)))", sql.output());
     }
 
     @Test
