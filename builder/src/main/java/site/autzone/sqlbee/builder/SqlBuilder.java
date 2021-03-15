@@ -34,7 +34,7 @@ public class SqlBuilder extends AbstractConfigurerBuilder<Sql> {
   private List<IJoin> IJoins = new ArrayList<>();
 
   //main table configurer
-  private static Configurer sqlTableConfigurer = null;
+  private Configurer sqlTableConfigurer = null;
 
   // 数据集限制
   private IValue firstResults;
