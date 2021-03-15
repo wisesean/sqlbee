@@ -31,4 +31,8 @@ public interface ITable extends ITextAble, IUnique {
    * @param subSql
    */
   void subSqlAsTable(Sql subSql);
+
+  Integer getUniqueInteger();
+
+  void setUniqueInteger(Integer unique);
 }

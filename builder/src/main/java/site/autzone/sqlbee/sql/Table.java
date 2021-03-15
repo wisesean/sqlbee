@@ -54,6 +54,14 @@ public class Table implements ITable {
     this.alias = alias;
   }
 
+  public Integer getUniqueInteger() {
+    return uniqueInteger;
+  }
+
+  public void setUniqueInteger(Integer uniqueInteger) {
+    this.uniqueInteger = uniqueInteger;
+  }
+
   @Override
   public String output() {
     StringBuffer tableText = null;

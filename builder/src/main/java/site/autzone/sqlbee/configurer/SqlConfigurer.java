@@ -85,6 +85,26 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   }
 
   /**
+   * 根据table配置主表
+   *
+   * @param table
+   * @return
+   */
+  public SqlConfigurer table(ITable table) {
+    if(tables.size() == 0) {
+      //第一张添加的表作为主表
+      //主表标识为唯一标识
+      table.setUniqueInteger(0);
+      tables.add(table);
+      return this;
+    }else {
+      //后续添加的表默认为innerJoin
+      return this.innerJoin(table);
+    }
+  }
+
+
+  /**
    * 根据表明和别名配置主表
    *
    * @param name
@@ -92,9 +112,7 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
    * @return
    */
   public SqlConfigurer table(String name, String alias) {
-    Validate.isTrue(tables.size() == 0);
-    tables.add(new Table(tables.size(), name, alias));
-    return this;
+    return this.table(new Table(name, alias));
   }
 
   /**
@@ -128,32 +146,21 @@ public class SqlConfigurer extends AbstractConfigurer<SqlBuilder> {
   /**
    * 连表查询 inner join
    *
-   * @param mainTable 主表
    * @param joinTable 被连接的表
    * @return
    */
-  public SqlConfigurer innerJoin(ITable mainTable, ITable joinTable) {
-    Validate.isTrue(this.tables
-            .stream()
-            .filter(table -> mainTable.uniqueName().equals(table.uniqueName()))
-            .findAny()
-            .isPresent());
-    IJoins.add(new Inner(mainTable, joinTable));
+  public SqlConfigurer innerJoin(ITable joinTable) {
+    //主表不存在则作为主表
+    if(this.tables.size() == 0) {
+      return this.table(joinTable);
+    }
+    IJoins.add(new Inner(this.tables.get(0), joinTable));
     this.tables.add(joinTable);
     return this;
   }
 
   public SqlConfigurer innerJoinWithAlias(String mainTableAlias, ITable joinTable) {
-    Optional<ITable> mainTable =
-        this.tables.stream().filter(table -> mainTableAlias.equals(table.uniqueName())).findAny();
-    Validate.isTrue(mainTable.isPresent());
-    innerJoin(mainTable.get(), joinTable);
-    return this;
-  }
-
-  public SqlConfigurer innerJoin(ITable joinTable) {
-    Validate.noNullElements(this.tables);
-    innerJoin(this.tables.get(0), joinTable);
+    innerJoin(joinTable);
     return this;
   }
 

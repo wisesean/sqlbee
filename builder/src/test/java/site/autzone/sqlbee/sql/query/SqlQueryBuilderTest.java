@@ -9,6 +9,7 @@ import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.condition.Condition;
 import site.autzone.sqlbee.condition.Operator;
+import site.autzone.sqlbee.configurer.SqlConfigurer;
 import site.autzone.sqlbee.sql.Table;
 import site.autzone.sqlbee.value.Value;
 import site.autzone.sqlbee.sql.Sql;
@@ -48,6 +49,30 @@ public class SqlQueryBuilderTest {
                 .inCondition().column("T1.SID")
                 .subSql("SELECT T3.ID FROM TABLE3 AS T3 WHERE T3.ID = T1.SID").end()
                 .sql();
+    }
+
+    /**
+     * 测试多个SqlBuilder实例并存的时候是否出现问题
+     */
+    @Test
+    public void testMultiSqlConfigurer() {
+        SqlBuilder sql = SqlBuilder.createQuery().table("TABLE").end();
+        SqlBuilder sql2 = SqlBuilder.createQuery().table("TABLE2").end();
+        sql2.table().table("aaa", "bb").joinCondition("ss", "=", "bb.id");
+        sql2.table().column("sss");
+
+        sql2.condition("=").left("sss").right("2222");
+        sql.table().table("bbb", "aaa").joinCondition("ss", "=", "aaa.id");
+        sql.table().column("sss");
+
+        sql2.table().table("TABLE3", "T3").joinCondition("S3", "=", "T3.SS");
+        sql.table().table("TABLE3", "T3").joinCondition("S3", "=", "T3.SS");
+
+        sql.isCount(true);
+        Assert.assertEquals("SELECT COUNT(*) COUNT FROM TABLE INNER JOIN bbb AS aaa ON (ss = aaa.id) INNER JOIN TABLE3 AS T3 ON (S3 = T3.SS)",
+                sql.build().output());
+        Assert.assertEquals("SELECT sss FROM TABLE2 INNER JOIN aaa AS bb ON (ss = bb.id) INNER JOIN TABLE3 AS T3 ON (S3 = T3.SS) WHERE (sss = 2222)",
+                sql2.build().output());
     }
 
     /**
