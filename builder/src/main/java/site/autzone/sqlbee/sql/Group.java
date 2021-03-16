@@ -4,6 +4,7 @@ import org.apache.commons.lang3.Validate;
 import site.autzone.sqlbee.ITextAble;
 import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IColumn;
+import site.autzone.sqlbee.injection.SqlCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Group implements ITextAble {
 	public String output() {
 		Validate.isTrue(this.columns.size() > 0);
 		StringBuffer sb = new StringBuffer(" GROUP BY ");
-		sb.append(TextAbleJoin.joinWithSkip(columns, ","));
+		sb.append(TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, columns, ","));
 		return sb.toString();
 	}
 }

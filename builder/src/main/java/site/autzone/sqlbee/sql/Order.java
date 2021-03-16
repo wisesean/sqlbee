@@ -3,6 +3,7 @@ package site.autzone.sqlbee.sql;
 import site.autzone.sqlbee.ITextAble;
 import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IColumn;
+import site.autzone.sqlbee.injection.SqlCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class Order implements ITextAble {
 		if(this.columns.size() == 0) {
 			return "";
 		}
-		StringBuffer sb = new StringBuffer(" ORDER BY ").append(TextAbleJoin.joinWithSkip(this.columns, ",")).append(" ").append(order);
+		StringBuffer sb = new StringBuffer(" ORDER BY ").append(TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, this.columns, ",")).append(" ").append(order);
 		return sb.toString();
 	}
 }

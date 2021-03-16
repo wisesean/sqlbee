@@ -7,6 +7,7 @@ import site.autzone.sqlbee.ICondition;
 import site.autzone.sqlbee.IJoin;
 import site.autzone.sqlbee.ITable;
 import site.autzone.sqlbee.ITextAble;
+import site.autzone.sqlbee.injection.SqlCheck;
 import site.autzone.sqlbee.sql.TextAbleJoin;
 
 /**
@@ -49,7 +50,7 @@ public abstract class AbstractJoin implements IJoin {
     StringBuffer sb = new StringBuffer(" ");
     sb.append(this.joinName).append(" ");
     sb.append(joinTable.output()).append(" ON ");
-    sb.append(TextAbleJoin.joinWithSkip(conditions, " AND "));
+    sb.append(TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, conditions, " AND "));
     return sb.toString();
   }
   

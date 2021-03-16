@@ -5,6 +5,7 @@ import site.autzone.sqlbee.IColumn;
 import site.autzone.sqlbee.ICondition;
 import site.autzone.sqlbee.ITextAble;
 import site.autzone.sqlbee.column.Column;
+import site.autzone.sqlbee.injection.SqlCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class Having implements ITextAble {
 	public String output() {
 		Validate.isTrue(this.conditions.size() > 0);
 		StringBuffer sb = new StringBuffer(" HAVING ");
-		sb.append(TextAbleJoin.joinWithSkip(conditions, ","));
+		sb.append(TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, conditions, ","));
 		return sb.toString();
 	}
 }

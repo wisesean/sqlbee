@@ -3,6 +3,9 @@ package site.autzone.sqlbee.column;
 import org.apache.commons.lang3.Validate;
 import site.autzone.sqlbee.IColumn;
 
+/**
+ * 查询字段
+ */
 public class Column implements IColumn {
 	private String prefix;
 	private String name;

@@ -1,5 +1,6 @@
 package site.autzone.sqlbee.condition;
 
+import site.autzone.sqlbee.injection.SqlCheck;
 import site.autzone.sqlbee.sql.TextAbleJoin;
 
 public class MulCondition extends AbstractCondition {
@@ -9,6 +10,6 @@ public class MulCondition extends AbstractCondition {
 	}
 	@Override
 	public String output() {
-		return "("+ TextAbleJoin.joinWithSkip(super.getChildren(), " "+operator+" ")+")";
+		return "("+ TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, super.getChildren(), " "+operator+" ")+")";
 	}
 }

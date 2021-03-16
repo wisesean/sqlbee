@@ -2,12 +2,14 @@ package site.autzone.sqlbee.configurer;
 
 import java.util.List;
 
+import org.apache.commons.lang3.Validate;
 import site.autzone.sqlbee.builder.SqlBuilder;
 import site.autzone.sqlbee.condition.AbstractCondition;
 import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IColumn;
 import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.condition.In;
+import site.autzone.sqlbee.injection.SqlCheck;
 import site.autzone.sqlbee.sql.Sql;
 import site.autzone.sqlbee.value.Value;
 

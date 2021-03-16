@@ -9,7 +9,6 @@ import site.autzone.sqlbee.column.Column;
 import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.condition.Condition;
 import site.autzone.sqlbee.condition.Operator;
-import site.autzone.sqlbee.configurer.SqlConfigurer;
 import site.autzone.sqlbee.sql.Table;
 import site.autzone.sqlbee.value.Value;
 import site.autzone.sqlbee.sql.Sql;
@@ -47,7 +46,7 @@ public class SqlQueryBuilderTest {
                 .sql())
                 .end()
                 .inCondition().column("T1.SID")
-                .subSql("SELECT T3.ID FROM TABLE3 AS T3 WHERE T3.ID = T1.SID").end()
+                .subSql("SELECT T3.ID FROM TABLE3 AS T3 WHERE T3.ID = T1.SID OR (1 = 1)").end()
                 .sql();
     }
 

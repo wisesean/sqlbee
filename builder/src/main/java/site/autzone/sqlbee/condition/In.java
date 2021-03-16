@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.Validate;
 import site.autzone.sqlbee.ITextAble;
+import site.autzone.sqlbee.injection.SqlCheck;
 import site.autzone.sqlbee.sql.TextAbleJoin;
 
 public class In extends AbstractCondition {
@@ -29,7 +30,7 @@ public class In extends AbstractCondition {
 				sb.append(" OR ");
 			}
 			sb.append(super.conditions.get(0).output())
-			  .append(" IN(").append(TextAbleJoin.joinWithSkip(
+			  .append(" IN(").append(TextAbleJoin.joinWithSkip(SqlCheck.MODE.LOOSELY,
 							inValues.subList(startIdx, endIdx),
 							","))
 			  .append(")");

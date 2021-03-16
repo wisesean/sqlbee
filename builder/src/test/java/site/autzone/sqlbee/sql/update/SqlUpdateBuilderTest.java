@@ -12,10 +12,13 @@ import site.autzone.sqlbee.builder.SqlBuilder;
  * @author wisesean
  */
 public class SqlUpdateBuilderTest {
+  /**
+   * 测试更新字段为空值
+   */
   @Test
   public void testNullValue() {
     SqlBuilder sb = SqlBuilder.createUpdate().table("TABLE").column("NAME", new Value(null)).end();
-    sb.sql();
+    Assert.assertEquals("UPDATE TABLE SET NAME = ?", sb.build().output());
   }
   @Test
   public void testApp() throws Exception {

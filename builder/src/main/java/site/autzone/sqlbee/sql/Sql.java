@@ -16,6 +16,7 @@ import site.autzone.sqlbee.IValue;
 import site.autzone.sqlbee.column.InsertColumn;
 import site.autzone.sqlbee.IJoin;
 import site.autzone.sqlbee.builder.SqlBuilderType;
+import site.autzone.sqlbee.injection.SqlCheck;
 import site.autzone.sqlbee.value.Value;
 
 /**
@@ -81,27 +82,35 @@ public class Sql implements ISql {
             if(this.countColumns.size() == 0) {
                 return "COUNT(*) COUNT";
             }else {
-                return this.countColumns.get(this.countColumns.size() - 1).output();
+                String countCol = this.countColumns.get(this.countColumns.size() - 1).output();
+                //检查是否存在sql注入风险
+                SqlCheck.containsSqlInjectionStrict(countCol);
+                return countCol;
             }
         }
 
         if (this.getColumns().size() == 0) {
             return "*";
         }
-        return TextAbleJoin.joinWithSkip(this.getColumns(), ",");
+        return TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, this.getColumns(), ",");
     }
 
     public String buildTables() {
-        StringBuffer sb = new StringBuffer();
-        sb.append(this.tables.get(0).output());
+        String mainTable = this.tables.get(0).output();
+        //防止sql注入
+        SqlCheck.containsSqlInjectionStrict(mainTable);
+        StringBuffer sb = new StringBuffer(mainTable);
         for (IJoin IJoin : this.IJoins) {
-            sb.append(IJoin.output());
+            String join = IJoin.output();
+            //防止sql注入
+            SqlCheck.containsSqlInjectionStrict(join);
+            sb.append(join);
         }
         return sb.toString();
     }
 
     public String buildConditions() {
-        String condition = TextAbleJoin.joinWithSkip(this.getConditions(), " AND ");
+        String condition = TextAbleJoin.joinWithSkip(SqlCheck.MODE.LOOSELY, this.getConditions(), " AND ");
         if (condition.length() > 0) {
             return " WHERE " + condition;
         } else {
@@ -129,7 +138,7 @@ public class Sql implements ISql {
         if(this.unions == null || this.unions.size() == 0) {
             return "";
         }
-        return " " + TextAbleJoin.joinWithSkip(this.unions, " ");
+        return " " + TextAbleJoin.joinWithSkip(SqlCheck.MODE.LOOSELY, this.unions, " ");
     }
 
     private String buildLimit() {
@@ -218,7 +227,7 @@ public class Sql implements ISql {
 
     private Object buildUpdateItems() {
         Validate.isTrue(this.updateColumns.size() > 0);
-        return " SET " + TextAbleJoin.joinWithSkip(this.updateColumns, ",");
+        return " SET " + TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, this.updateColumns, ",");
     }
 
     public void isCount(boolean isCount) {
@@ -383,7 +392,7 @@ public class Sql implements ISql {
         for (InsertColumn insertItem : this.insertColumns) {
             values.add(insertItem.getValue());
         }
-        return " VALUES(" + TextAbleJoin.joinWithSkip(values, ",") + ")";
+        return " VALUES(" + TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, values, ",") + ")";
     }
 
     private Object buildInsertItems() {
@@ -392,7 +401,7 @@ public class Sql implements ISql {
         for (InsertColumn insertItem : this.insertColumns) {
             items.add(insertItem.getField());
         }
-        return "(" + TextAbleJoin.joinWithSkip(items, ",") + ")";
+        return "(" + TextAbleJoin.joinWithSkip(SqlCheck.MODE.STRICT, items, ",") + ")";
     }
 
     @Override

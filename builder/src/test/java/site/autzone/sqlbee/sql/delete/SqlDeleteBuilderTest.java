@@ -5,6 +5,9 @@ import org.junit.Test;
 import site.autzone.sqlbee.value.Value;
 import site.autzone.sqlbee.builder.SqlBuilder;
 
+/**
+ * 测试删除语句
+ */
 public class SqlDeleteBuilderTest {
     @Test
     public void testApp() throws Exception {
