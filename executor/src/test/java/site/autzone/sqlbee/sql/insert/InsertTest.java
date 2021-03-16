@@ -23,7 +23,7 @@ import site.autzone.sqlbee.value.Value;
  * @author wisesean
  *
  */
-public class SqlInsertBuilderTest {
+public class InsertTest {
   private Connection connection;
 
   @Before
