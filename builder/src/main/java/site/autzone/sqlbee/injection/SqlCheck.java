@@ -19,9 +19,10 @@ public class SqlCheck {
      * @return
      */
     public static void containsSqlInjectionStrict(String obj) {
-        Pattern pattern= Pattern.compile("\\b(and|exec|insert|select|drop|grant|alter|delete|update|chr|mid|master|truncate|char|declare|or)\\b|(;|\\+|'|%)");
-        Matcher matcher=pattern.matcher(obj==null?"":obj.toLowerCase());
-        Validate.isTrue(!matcher.find(), "输入内容存在SQL注入安全风险,请检查输入内容:"+obj);
+//        Pattern pattern= Pattern.compile("\\b(and|exec|insert|select|drop|grant|alter|delete|update|chr|mid|master|truncate|char|declare|or)\\b|(;|\\+|'|%)");
+//        Matcher matcher=pattern.matcher(obj==null?"":obj.toLowerCase());
+//        Validate.isTrue(!matcher.find(), "输入内容存在SQL注入安全风险,请检查输入内容:"+obj);
+        SqlCheck.containsSqlInjectionLoosely(obj);
     }
 
     /**
