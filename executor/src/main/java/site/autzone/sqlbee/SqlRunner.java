@@ -25,17 +25,15 @@ public class SqlRunner implements SqlExecutor {
     public SqlRunner(DataSource dataSource) {
         this.dataSource = dataSource;
     }
-    @Override
+
     public QueryRunner getQueryRunner() {
         return new QueryRunner(this.dataSource);
     }
 
-    @Override
     public AsyncQueryRunner getAsyncQueryRunner() {
         return new AsyncQueryRunner(Executors.newFixedThreadPool(nThreads), this.getQueryRunner());
     }
 
-    @Override
     public ProcRunner getProcRunner() {
         return new ProcRunner(this.dataSource);
     }

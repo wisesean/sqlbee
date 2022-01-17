@@ -25,6 +25,7 @@
 	<modules>
         <module>configurer</module>
 		<module>builder</module>
+		<module>executor-core</module>
 		<module>executor</module>
 	</modules>
 	<dependencyManagement>
@@ -38,6 +39,11 @@
 			<dependency>
 				<groupId>site.autzone.sqlbee</groupId>
 				<artifactId>builder</artifactId>
+				<version>${sqlbee.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>site.autzone.sqlbee</groupId>
+				<artifactId>executor-core</artifactId>
 				<version>${sqlbee.version}</version>
 			</dependency>
 			<dependency>

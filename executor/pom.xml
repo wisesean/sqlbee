@@ -20,6 +20,10 @@
 			<artifactId>builder</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>site.autzone.sqlbee</groupId>
+			<artifactId>executor-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
 			<version>1.7</version>
